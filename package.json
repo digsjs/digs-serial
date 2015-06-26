@@ -4,7 +4,7 @@
   "description": "Local device bindings for Digs",
   "main": "index.js",
   "scripts": {
-    "prepublish": "node node_modules/digs-dev ."
+    "prepublish": "node node_modules/digs-dev . && grunt usbIds"
   },
   "repository": {
     "type": "git",
@@ -27,14 +27,19 @@
     "digs-dev": "^0.1.6"
   },
   "dependencies": {
+    "JSONStream": "^1.0.4",
     "bluebird": "^2.9.30",
     "co-states": "^0.1.0",
     "debug": "^2.2.0",
     "digs-client": "^0.1.2",
     "digs-common": "^0.1.0",
-    "johnny-five": "^0.8.78",
+    "johnny-five": "^0.8.81",
     "joi": "^6.4.3",
     "lodash": "^3.9.3",
-    "serialport": "^1.7.4"
+    "progress": "^1.1.8",
+    "serialport": "^1.7.4",
+    "split": "^1.0.0",
+    "strip-ansi": "^2.0.1",
+    "through2": "^2.0.0"
   }
 }

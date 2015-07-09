@@ -14,7 +14,8 @@
     "digs",
     "five",
     "johnny",
-    "local"
+    "local",
+    "digs-plugin"
   ],
   "author": "Christopher Hiller <boneskull@boneskull.com>",
   "license": "MIT",

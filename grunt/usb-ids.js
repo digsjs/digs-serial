@@ -6,32 +6,35 @@ module.exports = function (grunt) {
     'Download, parse and reformat the USB vendor/product ID database',
     function () {
 
-      let http = require('http'),
-        JSONStream = require('JSONStream'),
-        split = require('split'),
-        usbIdsTransformStream = require('./lib/usb-ids-transform-stream'),
-        ProgressBar = require('progress'),
-        fs = require('fs'),
-        path = require('path'),
-        zlib = require('zlib');
+      let http = require('http');
+      let JSONStream = require('JSONStream');
+      let split = require('split');
+      let usbIdsTransformStream = require('./lib/usb-ids-transform-stream');
+      let mkdirp = require('mkdirp');
+      let ProgressBar = require('progress');
+      let fs = require('fs');
+      let path = require('path');
+      let zlib = require('zlib');
 
-      const URL = 'http://www.linux-usb.org/usb.ids.gz',
-        FILENAME = 'usb-ids.json',
-        DIR = path.join(__dirname, '..', 'data');
+      const URL = 'http://www.linux-usb.org/usb.ids.gz';
+      const FILENAME = 'usb-ids.json';
+      const DIR = path.join(__dirname, '..', 'data');
 
       let done = this.async();
 
       grunt.log.ok('Fetching USB ID database...');
 
+      mkdirp.sync(DIR);
+
       http.get(URL, function (res) {
         if (res.statusCode !== '200') {
-          let len = parseInt(res.headers['content-length'], 10),
-            bar = new ProgressBar('  downloading [:bar] :percent :etas', {
-              complete: '=',
-              incomplete: ' ',
-              width: 20,
-              total: len
-            });
+          let len = parseInt(res.headers['content-length'], 10);
+          let bar = new ProgressBar('  downloading [:bar] :percent :etas', {
+            complete: '=',
+            incomplete: ' ',
+            width: 20,
+            total: len
+          });
 
           res.on('data', function (chunk) {
             bar.tick(chunk.length);
@@ -52,8 +55,8 @@ module.exports = function (grunt) {
             });
         }
         else {
-          grunt.log.error('WARNING: Could not download USB ID database; received ' +
-            'code %d', res.statusCode);
+          grunt.log.error(`WARNING: Could not download USB ID database; ` +
+            `received code ${res.statusCode}`);
           if (res.statusMessage) {
             grunt.log.error('Status message: %s', res.statusMessage);
           }

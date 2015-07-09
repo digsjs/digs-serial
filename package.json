@@ -4,16 +4,16 @@
   "description": "Local device bindings for Digs",
   "main": "index.js",
   "scripts": {
-    "prepublish": "node node_modules/digs-dev . && grunt usbIds"
+    "prepublish": "digs-dev symlink && grunt usbIds"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/digsjs/digs-local.git"
   },
   "keywords": [
-    "johnny",
-    "five",
     "digs",
+    "five",
+    "johnny",
     "local"
   ],
   "author": "Christopher Hiller <boneskull@boneskull.com>",
@@ -24,18 +24,14 @@
   "homepage": "https://github.com/digsjs/digs-local#readme",
   "devDependencies": {
     "board-io": "^3.0.4",
-    "digs-dev": "^0.1.6"
+    "digs-dev": "^0.2.2-3"
   },
   "dependencies": {
     "JSONStream": "^1.0.4",
-    "bluebird": "^2.9.30",
     "co-states": "^0.1.0",
-    "debug": "^2.2.0",
-    "digs-client": "^0.1.2",
-    "digs-common": "^0.1.0",
+    "digs-common": "^0.2.1",
     "johnny-five": "^0.8.81",
-    "joi": "^6.4.3",
-    "lodash": "^3.9.3",
+    "mkdirp": "^0.5.1",
     "progress": "^1.1.8",
     "serialport": "^1.7.4",
     "split": "^1.0.0",

@@ -4,7 +4,7 @@
   "description": "Local device bindings for Digs",
   "main": "index.js",
   "scripts": {
-    "prepublish": "digs-dev symlink && grunt usbIds"
+    "prepublish": "digs-dev install && grunt usbIds"
   },
   "repository": {
     "type": "git",
@@ -12,10 +12,10 @@
   },
   "keywords": [
     "digs",
+    "digs-plugin",
     "five",
     "johnny",
-    "local",
-    "digs-plugin"
+    "local"
   ],
   "author": "Christopher Hiller <boneskull@boneskull.com>",
   "license": "MIT",
@@ -25,18 +25,40 @@
   "homepage": "https://github.com/digsjs/digs-local#readme",
   "devDependencies": {
     "board-io": "^3.0.4",
-    "digs-dev": "^0.2.2-3"
+    "chai": "^3.0.0",
+    "chai-as-promised": "^5.1.0",
+    "codacy-coverage": "^1.1.2",
+    "codeclimate-test-reporter": "^0.1.0",
+    "digs-dev": "^0.2.2-4",
+    "eslint": "^0.24.1",
+    "grunt": "^0.4.5",
+    "grunt-bump": "^0.3.1",
+    "grunt-cli": "^0.1.13",
+    "grunt-concurrent": "^2.0.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-dev-update": "^1.3.0",
+    "grunt-eslint": "^16.0.0",
+    "grunt-mocha-istanbul": "^2.4.0",
+    "istanbul-harmony": "^0.3.16",
+    "jit-grunt": "^0.9.1",
+    "load-grunt-config": "^0.17.2",
+    "mocha": "^2.2.5",
+    "rewire": "^2.3.4",
+    "sinon": "^1.15.4",
+    "sinon-chai": "^2.8.0",
+    "time-grunt": "^1.2.1"
   },
   "dependencies": {
     "JSONStream": "^1.0.4",
-    "co-states": "^0.1.0",
+    "ascoltatori": "^1.0.1",
     "digs-common": "^0.2.1",
-    "johnny-five": "^0.8.81",
+    "johnny-five": "^0.8.85",
     "mkdirp": "^0.5.1",
+    "pipe-event": "^0.1.0",
     "progress": "^1.1.8",
+    "qlobber-fsq": "^0.3.1",
     "serialport": "^1.7.4",
     "split": "^1.0.0",
-    "strip-ansi": "^2.0.1",
     "through2": "^2.0.0"
   }
 }

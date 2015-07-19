@@ -4,6 +4,7 @@
   "description": "Local device bindings for Digs",
   "main": "index.js",
   "scripts": {
+    "test": "grunt eslint",
     "prepublish": "digs-dev install && grunt usbIds"
   },
   "repository": {
@@ -51,7 +52,7 @@
   "dependencies": {
     "JSONStream": "^1.0.4",
     "ascoltatori": "^1.0.1",
-    "digs-common": "^0.2.1",
+    "digs-common": "github:digsjs/digs-common#plugins",
     "johnny-five": "^0.8.85",
     "mkdirp": "^0.5.1",
     "pipe-event": "^0.1.0",

@@ -12,14 +12,13 @@
 
 let through2 = require('through2');
 
-let VENDOR_REGEX = /^([a-f0-9]{4})\s+(.+)$/,
-  PRODUCT_REGEX = /^\t([a-f0-9]{4})\s+(.+)$/,
+let VENDOR_REGEX = /^([a-f0-9]{4})\s+(.+)$/;
+let PRODUCT_REGEX = /^\t([a-f0-9]{4})\s+(.+)$/;
+let opts = {
+  objectMode: true
+};
 
-  opts = {
-    objectMode: true
-  };
-
-module.exports = through2(opts, function (chunk, encoding, callback) {
+module.exports = through2(opts, function(chunk, encoding, callback) {
   let groups;
   if ((groups = String(chunk).match(VENDOR_REGEX))) {
     if (this.lastId) {
@@ -35,7 +34,7 @@ module.exports = through2(opts, function (chunk, encoding, callback) {
     this.lastVendor.products['0x' + groups[1]] = groups[2];
   }
   callback();
-}, function (callback) {
+}, function(callback) {
   this.push([this.lastId, this.lastVendor]);
   callback();
 });

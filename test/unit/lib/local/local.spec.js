@@ -6,7 +6,6 @@ let DigsEmitter = require('digs-common/digs-emitter');
 let qlobberFsq = require('qlobber-fsq');
 let path = require('path');
 let Promise = require('bluebird');
-let _ = require('lodash');
 let ascoltatori = require('ascoltatori');
 
 describe('Local', function() {

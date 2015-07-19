@@ -22,6 +22,18 @@ module.exports = function (grunt) {
 
       let done = this.async();
 
+      try {
+        fs.statSync(path.join(DIR, FILENAME));
+        grunt.log.ok('USB ID database already downloaded');
+        if (this.options.force) {
+          grunt.log.ok('--force enabled; downloading anyway');
+        } else {
+          return done();
+        }
+      } catch (ignored) {
+        // ignored
+      }
+
       grunt.log.ok('Fetching USB ID database...');
 
       mkdirp.sync(DIR);

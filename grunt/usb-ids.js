@@ -25,8 +25,8 @@ module.exports = function (grunt) {
       try {
         fs.statSync(path.join(DIR, FILENAME));
         grunt.log.ok('USB ID database already downloaded');
-        if (this.options.force) {
-          grunt.log.ok('--force enabled; downloading anyway');
+        if (this.flags.force) {
+          grunt.log.ok('"force" enabled; downloading anyway');
         } else {
           return done();
         }

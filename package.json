@@ -54,7 +54,7 @@
     "ascoltatori": "^1.0.1",
     "bluebird": "^2.9.34",
     "debug": "^2.2.0",
-    "digs-common": "^0.2.2-1",
+    "digs-common": "^0.2.2-2",
     "johnny-five": "^0.8.85",
     "joi": "^6.5.0",
     "lodash": "^3.10.0",

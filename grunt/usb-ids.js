@@ -1,9 +1,5 @@
 'use strict';
 
-const URL = 'http://www.linux-usb.org/usb.ids.gz';
-const FILENAME = 'usb-ids.json';
-const DIR = path.join(__dirname, '..', 'data');
-
 module.exports = function(grunt) {
 
   grunt.registerTask('usbIds',
@@ -19,6 +15,10 @@ module.exports = function(grunt) {
       let fs = require('fs');
       let path = require('path');
       let zlib = require('zlib');
+
+      const URL = 'http://www.linux-usb.org/usb.ids.gz';
+      const FILENAME = 'usb-ids.json';
+      const DIR = path.join(__dirname, '..', 'data');
 
       let done = this.async();
 

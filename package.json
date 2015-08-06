@@ -1,15 +1,15 @@
 {
-  "name": "digs-local",
+  "name": "digs-serial",
   "version": "0.1.0",
-  "description": "Local device bindings for Digs",
-  "main": "index.js",
+  "description": "Serial device bindings for Digs",
+  "main": "lib/index.js",
   "scripts": {
     "prepublish": "digs-dev install && grunt usbIds",
     "test": "grunt eslint"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/digsjs/digs-local.git"
+    "url": "git+https://github.com/digsjs/digs-serial.git"
   },
   "keywords": [
     "digs",
@@ -21,9 +21,9 @@
   "author": "Christopher Hiller <boneskull@boneskull.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/digsjs/digs-local/issues"
+    "url": "https://github.com/digsjs/digs-serial/issues"
   },
-  "homepage": "https://github.com/digsjs/digs-local#readme",
+  "homepage": "https://github.com/digsjs/digs-serial#readme",
   "devDependencies": {
     "board-io": "^3.0.4",
     "chai": "^3.0.0",
@@ -53,7 +53,7 @@
     "JSONStream": "^1.0.4",
     "ascoltatori": "^1.0.1",
     "bluebird": "^2.9.34",
-    "debug": "^2.2.0",
+    "boom": "^2.8.0",
     "digs-common": "^0.2.2-2",
     "johnny-five": "^0.8.85",
     "joi": "^6.5.0",

@@ -1,19 +1,19 @@
 'use strict';
 
 let rewire = require('rewire');
-let Local = rewire('../../../../lib/local');
+let Serial = rewire('../../../../lib/local');
 let DigsEmitter = require('digs-common/digs-emitter');
 let qlobberFsq = require('qlobber-fsq');
 let path = require('path');
 let Promise = require('bluebird');
 let ascoltatori = require('ascoltatori');
 
-describe('Local', function() {
+describe('Serial', function() {
 
   let sandbox;
 
   beforeEach(function() {
-    sandbox = sinon.sandbox.create('Local');
+    sandbox = sinon.sandbox.create('Serial');
   });
 
   afterEach(function() {
@@ -22,15 +22,15 @@ describe('Local', function() {
 
   describe('constructor', function() {
     it('should be a function', function() {
-      expect(Local).to.be.a('function');
+      expect(Serial).to.be.a('function');
     });
 
     it('should instantiate a DigsEmitter', function() {
-      expect(new Local()).to.be.instanceof(DigsEmitter);
+      expect(new Serial()).to.be.instanceof(DigsEmitter);
     });
 
     it('should set _ascoltatoriOpts', function() {
-      expect(new Local()._ascoltatoriOpts).to.eql({
+      expect(new Serial()._ascoltatoriOpts).to.eql({
         type: 'filesystem',
         json: false,
         qlobber_fsq: qlobberFsq,
@@ -39,19 +39,19 @@ describe('Local', function() {
     });
 
     it('should set empty "devices" property', function() {
-      expect(new Local()._devices).to.eql({});
+      expect(new Serial()._devices).to.eql({});
     });
 
     it('should set null "_ascoltatore" property', function() {
-      expect(new Local()._ascoltatore).to.be.null;
+      expect(new Serial()._ascoltatore).to.be.null;
     });
 
     it('should set "_digs" property from parameters', function() {
-      expect(new Local('foo')._digs).to.equal('foo');
+      expect(new Serial('foo')._server).to.equal('foo');
     });
 
     it('should set "_opts" property from parameters with defaults', function() {
-      expect(new Local('foo', {
+      expect(new Serial('foo', {
         bar: 'baz'
       })._opts).to.eql({
           devices: {},
@@ -71,7 +71,7 @@ describe('Local', function() {
       };
       buildAsync = sandbox.stub(ascoltatori, 'buildAsync').
         returns(Promise.resolve({}));
-      local = new Local();
+      local = new Serial();
       sandbox.stub(local, 'createDevices').returns([device]);
     });
 

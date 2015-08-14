@@ -55,6 +55,7 @@
     "bluebird": "^2.9.34",
     "boom": "^2.8.0",
     "digs-common": "^0.2.2-2",
+    "graceful-fs": "^4.1.2",
     "johnny-five": "^0.8.85",
     "joi": "^6.5.0",
     "lodash": "^3.10.0",

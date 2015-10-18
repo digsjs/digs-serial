@@ -1,6 +1,0 @@
-main:
-  - lib/**/*.js
-  - test/unit/**/*.js
-  - grunt/lib/**/*.js
-  - grunt/usb-ids.js
-

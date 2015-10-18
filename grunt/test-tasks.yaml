@@ -1,0 +1,14 @@
+mocha_istanbul:
+  src: test/**/*.spec.js
+  options:
+    coverage: false
+
+eslint:
+  src:
+    - 'lib/**/*.js'
+    - 'test/**/*.js'
+    - '!**/*.yaml'
+    - '!Gruntfile.js'
+    - '!grunt/testfile.js'
+    - '!grunt/digs-dev.js'
+    - '!test/fixture.js'

@@ -3,7 +3,9 @@
 const DigsSerialDevice = require('../../lib/serial-device');
 const DigsSerial = require('../../lib/serial');
 const digsMock = require('digs-common/test/mocks/digs');
-const Promise = require('digs-common').Promise;
+const common = require('digs-common');
+const Promise = common.Promise;
+const _ = common.utils;
 
 describe(`DigsSerial`, () => {
   let sandbox;
@@ -26,6 +28,7 @@ describe(`DigsSerial`, () => {
     beforeEach(() => {
       sandbox.stub(DigsSerial.fixed.methods, 'onstart')
         .returns(Promise.resolve());
+      _.set(digs, "plugins['digs-mqtt-broker'].broker", 'foo');
     });
 
     it(`should throw if not passed a Digs instance`, () => {
@@ -37,29 +40,29 @@ describe(`DigsSerial`, () => {
     });
 
     it(`should save a reference to Digs' broker`, () => {
-      digs.broker = {};
       return expect(DigsSerial({}, digs).get('broker'))
-        .to.eventually.equal(digs.broker);
+        .to.eventually.equal(digs.plugins['digs-mqtt-broker'].broker);
     });
 
-    it(`should call DigsSerialDevice() for each device`, () => {
-      const init = sandbox.stub();
-      const inits = DigsSerialDevice.fixed.init;
-      DigsSerialDevice.fixed.init = [init];
-      return DigsSerial({
-        config: {
-          derp: {
-            foo: 'bar'
-          },
-          herp: {
-            baz: 'quux'
-          }
+    it(`should initialize a hash of devices`, () => {
+      const devices = {
+        derp: {
+          foo: 'bar'
+        },
+        herp: {
+          baz: 'quux'
         }
+      };
+      return DigsSerial({
+        config: devices
       }, digs)
-        .then(() => {
-          expect(init).to.have.been.calledTwice;
-        })
-        .finally(() => DigsSerialDevice.init = inits);
+        .then((ds) => {
+          expect(ds.devices).to.be.an('object');
+          expect(ds.devices.derp).to.be.an('object');
+          expect(ds.devices.herp).to.be.an('object');
+          expect(ds.devices.derp.foo).to.equal(devices.derp.foo);
+          expect(ds.devices.herp.baz).to.equal(devices.herp.baz);
+        });
     });
 
     describe(`if autoStart is true`, () => {
@@ -86,13 +89,9 @@ describe(`DigsSerial`, () => {
   describe(`event callback`, () => {
     describe(`onstart()`, () => {
       let ds;
-      let inits;
-      let init;
 
       beforeEach(() => {
-        init = sandbox.stub();
-        inits = DigsSerialDevice.fixed.init;
-        DigsSerialDevice.fixed.init = [init];
+        _.set(digs, "plugins['digs-mqtt-broker'].broker", 'foo');
         return DigsSerial({
           autoStart: false,
           config: {
@@ -104,18 +103,41 @@ describe(`DigsSerial`, () => {
             }
           }
         }, digs)
-          .then((_ds) => ds = _ds);
-      });
-
-      afterEach(() => {
-        DigsSerialDevice.fixed.init = inits;
+          .then((_ds) => {
+            ds = _ds
+            _.each(ds.devices, (device) => sandbox.spy(device, 'start'));
+          });
       });
 
       it(`should call the start() method of each DigsSerialDevice`, () => {
         return expect(ds.start()).to.eventually.be.fulfilled
           .then(() => {
-            expect(init).to.have.been.calledTwice;
+            _.each(ds.devices, (device) => {
+              expect(device.start).to.have.been.calledOnce;
+            });
           });
+      });
+
+      describe(`if failOnError is false`, () => {
+        beforeEach(() => {
+          ds.failOnError = false;
+        });
+
+        it(`should fulfill even if error`, () => {
+          return expect(ds.start()).to.eventually.be.fulfilled;
+        });
+      });
+
+      describe(`if failOnError is true`, () => {
+        beforeEach(() => {
+          ds.failOnError = true;
+        });
+
+        it(`should reject if error`, () => {
+          sandbox.restore(ds.devices.derp, 'start');
+          sandbox.stub(ds.devices.derp, 'start').returns(Promise.reject());
+          return expect(ds.start()).to.eventually.be.rejectedWith(Error);
+        });
       });
     });
   });

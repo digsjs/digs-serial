@@ -28,7 +28,6 @@ describe(`DigsSerial`, () => {
     beforeEach(() => {
       sandbox.stub(DigsSerial.fixed.methods, 'onstart')
         .returns(Promise.resolve());
-      _.set(digs, "plugins['digs-mqtt-broker'].broker", 'foo');
     });
 
     it(`should throw if not passed a Digs instance`, () => {
@@ -39,20 +38,17 @@ describe(`DigsSerial`, () => {
       return expect(DigsSerial({}, digs)).to.eventually.be.fulfilled;
     });
 
-    it(`should save a reference to Digs' broker`, () => {
-      return expect(DigsSerial({}, digs).get('broker'))
-        .to.eventually.equal(digs.plugins['digs-mqtt-broker'].broker);
-    });
-
-    it(`should initialize a hash of devices`, () => {
-      const devices = {
-        derp: {
+    it(`should initialize an array of devices`, () => {
+      const devices = [
+        {
+          id: 'derp',
           foo: 'bar'
         },
-        herp: {
+        {
+          id: 'herp',
           baz: 'quux'
         }
-      };
+      ];
       return DigsSerial({
         config: devices
       }, digs)
@@ -60,8 +56,8 @@ describe(`DigsSerial`, () => {
           expect(ds.devices).to.be.an('object');
           expect(ds.devices.derp).to.be.an('object');
           expect(ds.devices.herp).to.be.an('object');
-          expect(ds.devices.derp.foo).to.equal(devices.derp.foo);
-          expect(ds.devices.herp.baz).to.equal(devices.herp.baz);
+          expect(ds.devices.derp.foo).to.equal(devices[0].foo);
+          expect(ds.devices.herp.baz).to.equal(devices[1].baz);
         });
     });
 
@@ -91,7 +87,6 @@ describe(`DigsSerial`, () => {
       let ds;
 
       beforeEach(() => {
-        _.set(digs, "plugins['digs-mqtt-broker'].broker", 'foo');
         return DigsSerial({
           autoStart: false,
           config: {
@@ -104,8 +99,10 @@ describe(`DigsSerial`, () => {
           }
         }, digs)
           .then((_ds) => {
-            ds = _ds
-            _.each(ds.devices, (device) => sandbox.spy(device, 'start'));
+            ds = _ds;
+            _.each(ds.devices,
+              (device) => sandbox.stub(device, 'start')
+                .returns(Promise.resolve(device)));
           });
       });
 
@@ -115,6 +112,24 @@ describe(`DigsSerial`, () => {
             _.each(ds.devices, (device) => {
               expect(device.start).to.have.been.calledOnce;
             });
+          });
+      });
+
+      it(`should resolve with an object containing a list of succesfully ` +
+        `started devices`, () => {
+        return expect(ds.start()).to.eventually.be.an('object')
+          .then((opts) => {
+            expect(opts.startedDevices).to.be.an('array');
+            expect(opts.startedDevices.length).to.equal(2);
+          });
+      });
+
+      it(`should resolve with an object containing a list of failed ` +
+        `devices`, () => {
+        return expect(ds.start()).to.eventually.be.an('object')
+          .then((opts) => {
+            expect(opts.failedDevices).to.be.an('array');
+            expect(opts.failedDevices.length).to.equal(0);
           });
       });
 

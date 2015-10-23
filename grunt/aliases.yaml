@@ -1,4 +1,4 @@
 test:
   - eslint:test
-  - mochacov:test
+  - mocha_istanbul:test
 

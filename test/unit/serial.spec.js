@@ -133,6 +133,15 @@ describe(`DigsSerial`, () => {
           });
       });
 
+      it(`should emit the new state`, () => {
+        const stub = sandbox.stub();
+        ds.once('started', stub);
+        expect(ds.start()).to.eventually.be.fulfilled
+          .then((opts) => {
+            expect(stub).to.have.been.calledWithExactly(opts);
+          });
+      });
+
       describe(`if failOnError is false`, () => {
         beforeEach(() => {
           ds.failOnError = false;
@@ -151,7 +160,10 @@ describe(`DigsSerial`, () => {
         it(`should reject if error`, () => {
           sandbox.restore(ds.devices.derp, 'start');
           sandbox.stub(ds.devices.derp, 'start').returns(Promise.reject());
-          return expect(ds.start()).to.eventually.be.rejectedWith(Error);
+          return expect(ds.start()).to.eventually.be.rejectedWith(Error)
+            .then(() => {
+              expect(ds.state).to.equal('stopped');
+            });
         });
       });
     });

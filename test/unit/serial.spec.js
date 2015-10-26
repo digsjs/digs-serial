@@ -1,6 +1,5 @@
 'use strict';
 
-const DigsSerialDevice = require('../../lib/serial-device');
 const DigsSerial = require('../../lib/serial');
 const digsMock = require('digs-common/test/mocks/digs');
 const common = require('digs-common');

@@ -40,30 +40,46 @@ describe(`DigsSerial`, () => {
     it(`should initialize an array of devices`, () => {
       const devices = [
         {
-          id: 'derp',
-          foo: 'bar'
+          config: {
+            id: 'derp',
+            foo: 'bar'
+          }
         },
         {
-          id: 'herp',
-          baz: 'quux'
+          config: {
+            id: 'herp',
+            baz: 'quux'
+          }
         }
       ];
       return DigsSerial({
-        config: devices
+        config: devices,
+        autoStart: false
       }, digs)
-        .then((ds) => {
+        .then(ds => {
           expect(ds.devices).to.be.an('object');
           expect(ds.devices.derp).to.be.an('object');
           expect(ds.devices.herp).to.be.an('object');
-          expect(ds.devices.derp.foo).to.equal(devices[0].foo);
-          expect(ds.devices.herp.baz).to.equal(devices[1].baz);
+          expect(ds.devices.derp.id)
+            .to
+            .equal(ds.devices.derp.config.id)
+            .to
+            .equal('derp');
+          expect(ds.devices.herp.id)
+            .to
+            .equal(ds.devices.herp.config.id)
+            .to
+            .equal('herp');
+          expect(ds.devices.derp.config.foo).to.equal(devices[0].config.foo);
+          expect(ds.devices.herp.config.baz).to.equal(devices[1].config.baz);
+          return Promise.map(_.toArray(ds.devices), device => device.stop());
         });
     });
 
     describe(`if autoStart is true`, () => {
       it(`should start`, () => {
         return DigsSerial({}, digs)
-          .then((ds) => {
+          .then(ds => {
             expect(ds.state).to.equal('started');
           });
       });
@@ -74,7 +90,7 @@ describe(`DigsSerial`, () => {
         return DigsSerial({
           autoStart: false
         }, digs)
-          .then((ds) => {
+          .then(ds => {
             expect(ds.state).to.equal('stopped');
           });
       });
@@ -90,25 +106,33 @@ describe(`DigsSerial`, () => {
           autoStart: false,
           config: {
             derp: {
-              foo: 'bar'
+              config: {
+                foo: 'bar'
+              }
             },
             herp: {
-              baz: 'quux'
+              config: {
+                baz: 'quux'
+              }
             }
           }
         }, digs)
-          .then((_ds) => {
+          .then(_ds => {
             ds = _ds;
             _.each(ds.devices,
-              (device) => sandbox.stub(device, 'start')
+              device => sandbox.stub(device, 'start')
                 .returns(Promise.resolve(device)));
           });
+      });
+
+      afterEach(() => {
+        return Promise.map(_.toArray(ds.devices), device => device.stop());
       });
 
       it(`should call the start() method of each DigsSerialDevice`, () => {
         return expect(ds.start()).to.eventually.be.fulfilled
           .then(() => {
-            _.each(ds.devices, (device) => {
+            _.each(ds.devices, device => {
               expect(device.start).to.have.been.calledOnce;
             });
           });
@@ -117,7 +141,7 @@ describe(`DigsSerial`, () => {
       it(`should resolve with an object containing a list of succesfully ` +
         `started devices`, () => {
         return expect(ds.start()).to.eventually.be.an('object')
-          .then((opts) => {
+          .then(opts => {
             expect(opts.startedDevices).to.be.an('array');
             expect(opts.startedDevices.length).to.equal(2);
           });
@@ -126,7 +150,7 @@ describe(`DigsSerial`, () => {
       it(`should resolve with an object containing a list of failed ` +
         `devices`, () => {
         return expect(ds.start()).to.eventually.be.an('object')
-          .then((opts) => {
+          .then(opts => {
             expect(opts.failedDevices).to.be.an('array');
             expect(opts.failedDevices.length).to.equal(0);
           });
@@ -136,7 +160,7 @@ describe(`DigsSerial`, () => {
         const stub = sandbox.stub();
         ds.once('started', stub);
         expect(ds.start()).to.eventually.be.fulfilled
-          .then((opts) => {
+          .then(opts => {
             expect(stub).to.have.been.calledWithExactly(opts);
           });
       });

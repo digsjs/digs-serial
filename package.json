@@ -42,7 +42,7 @@
     "grunt-mocha-istanbul": "github:boneskull/grunt-mocha-istanbul#peerdeps",
     "istanbul-harmony": "^0.3.16",
     "jit-grunt": "^0.9.1",
-    "load-grunt-config": "^0.17.2",
+    "load-grunt-config": "^0.18.0",
     "mocha": "^2.2.5",
     "rewire": "^2.3.4",
     "sinon": "^1.15.4",

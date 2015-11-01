@@ -1,80 +1,73 @@
 'use strict';
 
-module.exports = function(grunt) {
+const http = require('http');
+const JSONStream = require('JSONStream');
+const split = require('split');
+const usbIdsTransformStream = require('../lib/usb-ids-transform-stream');
+const common = require('digs-common');
+const fs = common.fs;
+const request = require('request');
+const mkdirp = fs.mkdirp;
+const ProgressBar = require('progress');
+const path = require('path');
+const zlib = require('zlib');
+const _ = common.utils;
 
-  grunt.registerTask('usbIds',
-    'Download, parse and reformat the USB vendor/product ID database',
-    function() {
+const url = 'http://www.linux-usb.org/usb.ids.gz';
+const outputFilename = 'usb-ids.json';
+const outputDirpath = path.join(__dirname, '..', 'data');
+const outputFilepath = path.join(outputDirpath, outputFilename);
 
-      let http = require('http');
-      let JSONStream = require('JSONStream');
-      let split = require('split');
-      let usbIdsTransformStream = require('./lib/usb-ids-transform-stream');
-      let mkdirp = require('mkdirp');
-      let ProgressBar = require('progress');
-      let fs = require('fs');
-      let path = require('path');
-      let zlib = require('zlib');
+module.exports = function usbIds(grunt) {
+  function fetch() {
+    grunt.log.ok('Fetching USB ID database...');
 
-      const URL = 'http://www.linux-usb.org/usb.ids.gz';
-      const FILENAME = 'usb-ids.json';
-      const DIR = path.join(__dirname, '..', 'data');
+    return mkdirp(outputDirpath)
+      .then(() => {
+        return new Promise((resolve, reject) => {
+          let bar;
 
-      let done = this.async();
-
-      try {
-        fs.statSync(path.join(DIR, FILENAME));
-        grunt.log.ok('USB vendor ID database already present; skipping');
-        if (this.flags.force) {
-          grunt.log.ok('"force" enabled; downloading anyway');
-        } else {
-          return done();
-        }
-      } catch (ignored) {
-        // ignored
-      }
-
-      grunt.log.ok('Fetching USB ID database...');
-
-      mkdirp.sync(DIR);
-
-      http.get(URL, function(res) {
-        if (res.statusCode !== '200') {
-          let len = parseInt(res.headers['content-length'], 10);
-          let bar = new ProgressBar('  downloading [:bar] :percent :etas', {
-            complete: '=',
-            incomplete: ' ',
-            width: 20,
-            total: len
-          });
-
-          res.on('data', function(chunk) {
-            bar.tick(chunk.length);
-          })
-            .on('error', function(err) {
-              grunt.log.error('WARNING: ' + err.message);
+          request.get(url)
+            .on('response', response => {
+              bar = new ProgressBar('  downloading [:bar] :percent :etas', {
+                complete: '=',
+                incomplete: ' ',
+                width: 20,
+                total: _.parseInt(response.headers['content-length'])
+              });
             })
+            .on('data', chunk => {
+              bar.tick(chunk.length);
+            })
+            .on('end', () => {
+              grunt.log.ok('Done');
+              resolve();
+            })
+            .on('error', reject)
             .pipe(zlib.createGunzip())
             .pipe(split(/\n/))
             .pipe(usbIdsTransformStream)
             .pipe(JSONStream.stringifyObject('{\n', ',\n', '\n}\n', 2))
-            .pipe(fs.createWriteStream(path.join(DIR, FILENAME)), {
+            .pipe(fs.createWriteStream(outputFilepath), {
               encoding: 'utf-8'
-            })
-            .on('end', function() {
-              grunt.log.ok('Done');
-              done();
             });
-        }
-        else {
-          grunt.log.error(`WARNING: Could not download USB ID database; ` +
-            `received code ${res.statusCode}`);
-          if (res.statusMessage) {
-            grunt.log.error('Status message: %s', res.statusMessage);
-          }
-        }
+        });
       });
+  }
 
+  grunt.registerTask('usbIds',
+    'Download, parse and format the USB vendor/product ID database',
+    function usbIdsTask() {
+      const done = this.async();
+
+      fs.statAsync(outputFilepath)
+        .then(() => {
+          if (grunt.option('force')) {
+            grunt.log.ok('"force" enabled; downloading anyway');
+            return fetch();
+          }
+          grunt.log.ok('USB vendor ID database already present; skipping');
+        }, fetch)
+        .then(done, done);
     });
-
 };

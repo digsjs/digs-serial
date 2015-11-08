@@ -1,16 +1,24 @@
 language: node_js
 node_js:
-- 4
-- 5
+  - 4
+  - 5
 env:
-- CC=clang CXX=clang++ npm_config_clang=1
+  - CC=clang CXX=clang++ npm_config_clang=1
 
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
     packages:
-    - gcc-4.8
-    - g++-4.8
-    - build-essential
-    - libudev-dev
+      - gcc-4.8
+      - g++-4.8
+      - build-essential
+      - libudev-dev
+notifications:
+  email: false
+  pushover:
+    api_key:
+      secure: "YAEwwgi1izL0sSEnxEVLDVVz39W/qyOOis/W5K0cp86WBlaYp0iqhKX1r5KP0RjMSjh7LOPGlSefP9VJ99ZAy8u//n5ubzjfTVk5VR+6LK2CtGeCPc+F/YwgesS9cLBQ1HDs/W7wXni69MEZHrf6KmdZEdDMXGA0WdKTx0vz7hLFxdYkxovPOh5f2jwZ4Sa21pAikVNcNR5dPJNpZytbJnKi0zAzFfLvZKv3+XpXNTl9o8GslwqIPBPCEDP07bYumkrGVt56cYsmZTKOLFgzLD3UW9lmPd4GlWz3o19+OqbVL/h9B0XSiY9xW9agRzEfdCczjJnQZoZaIiV263tGUJFhY60cRdE3SxQOy5JaA7YqDQSQHkFJlkuizYyUSZul4BERgiuH1F1gaOhvmDnI8uqhdGyH4/n0T/9VQQrMk4BkNmD49QtkwE64pW9rmGfMA6vJuCYUbG+rZag6gnFUYArQslQFlaDys1EXtdctxi7fvS75S1DhxD/PtbTJMvCwtySucFxf/5gE427r3CNjPigOqyg3nEV/ZUYtZAMc49vhQ2iD0wles1WWD6faYOSJDwgKaCpC/6wk+ybgBq389ti59fum41SfNZqQ3M+fKrvHx7HZ8lAByQUhC3QBEdtPDQdEES0+CRJBzvQ58eS4auoQM7pFSso5MArNo33lG7k="
+      users:
+      -
+        secure: "TZ1UCYn9+JoPjaOJHkQbDxvT04eNbQxpWnPfM1E5aGswa1lVjS/Z29/wv6ezIJ2Z3QICgR8z5CWjdZy4kQiZExsAZoOV17uytOVRKevSHXe6ErYBMCKAeDNxp/iaLXBIK1k0nyQwAzPo7yhe55abeZIGR+hNM7hlebKt901q21BJ42hGrKff9IMqKX8k+3/CnoGe1ZzA7hfnnKZmPh+CIfGhRB7vAK6woEhbAiEa5x6XVP86RptwOjY61IJcU1rbyXob6TnUFo9cKy2wIWKWwM3wkuHfrJOZ/tGrMwj4+rzBpOIjcfo8nl1mAqp1+tUAvOLZg2phNaiC2yPt1r8KlXnwyLRRaw/T+cCtwJ3X23l88IV7TEnIKKDHhVKP5FwQ/U5OUjmwWlerstEeL1F/F6/+mV+MpUSP0HfRChwIUgTN7CcK5x043wcX68CEvLXFgy7GeGCCgENG+MmJVu5CEqOl5WhJV924XJBcn3OpxFOY3yuWaa9Yrvz+oQscWblvkd+1rzvhN476Ye/TkdOdAOSOk1R/P0+eCTOCymP1AE29FbrkZr3utO45KaInYVSUu9ttCsgstRER42Qa/Lh7xaV4lBksb8d7D9gRu1+1gGJkMBwJngDHjogoP8pywqS7PkYQ4va5jtXc4s6CBTTNAIkVXZjndQnbOu5DGPnNc4o="

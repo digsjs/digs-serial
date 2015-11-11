@@ -14,10 +14,7 @@
   "keywords": [
     "digs",
     "digs-plugin",
-    "five",
-    "johnny",
     "local",
-    "j5",
     "serial",
     "serialport",
     "arduino"
@@ -36,7 +33,6 @@
   },
   "homepage": "https://github.com/digsjs/digs-serial#readme",
   "devDependencies": {
-    "board-io": "^3.0.4",
     "chai": "^3.4.0",
     "chai-as-promised": "^5.1.0",
     "codacy-coverage": "^1.1.3",
@@ -57,6 +53,7 @@
     "jit-grunt": "^0.9.1",
     "load-grunt-config": "^0.19.0",
     "mocha": "^2.3.3",
+    "mock-firmata": "0.0.4",
     "pre-commit": "^1.1.2",
     "rewire": "github:thesavior/rewire",
     "sinon": "^1.17.2",
@@ -67,16 +64,16 @@
   "dependencies": {
     "JSONStream": "^1.0.4",
     "boom": "^2.9.0",
-    "digs-common": "github:digsjs/digs-common",
+    "digs-common": "digsjs/digs-common",
+    "digs-serial-johnny-five": "digsjs/digs-serial-johnny-five",
     "fs-ext": "^0.5.0",
     "graceful-fs": "^4.1.2",
-    "johnny-five": "boneskull/johnny-five#npmignore",
-    "mkdirp": "^0.5.1",
     "pipe-event": "^0.1.0",
     "plural": "^0.2.0",
     "progress": "^1.1.8",
     "request": "^2.65.0",
     "serialport": "^2.0.1",
+    "spawn-module": "boneskull/node-spawn-module",
     "split": "^1.0.0",
     "through2": "^2.0.0"
   }

@@ -97,7 +97,11 @@ describe(`DigsSerial`, () => {
     });
   });
 
-  describe(`event callback`, () => {
+  describe(`event callback`, function() {
+    beforeEach(() => {
+      this.timeout(10000);
+    });
+
     describe(`onstart()`, () => {
       let ds;
 

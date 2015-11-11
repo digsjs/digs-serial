@@ -3,6 +3,8 @@
 const common = require('digs-common');
 const Promise = common.Promise;
 const getPort = require('get-port');
+const pkg = require('../../package.json');
+
 Promise.longStackTraces();
 
 describe(`digs-serial plugin`, () => {
@@ -27,7 +29,7 @@ describe(`digs-serial plugin`, () => {
           config: {
             dink: {
               config: {
-                io: 'johnny-five/test/util/mock-firmata'
+                io: 'mock-firmata/mock-firmata'
               }
             }
           }
@@ -57,7 +59,7 @@ describe(`digs-serial plugin`, () => {
 
   /* eslint prefer-arrow-callback:0 */
   it(`should register successfully`, function() {
-    this.timeout(4000);
+    this.timeout(10000);
     return expect(createServer()).to.eventually.be.fulfilled
       .then(server => {
         return server.stopAsync();
@@ -69,7 +71,7 @@ describe(`digs-serial plugin`, () => {
 
     /* eslint prefer-arrow-callback:0 */
     beforeEach(function() {
-      this.timeout(4000);
+      this.timeout(10000);
       return createServer()
         .then(_digs => {
           digs = _digs;
@@ -84,7 +86,7 @@ describe(`digs-serial plugin`, () => {
 
     describe(`serialPorts()`, () => {
       it(`should expose plugin method serialPorts()`, () => {
-
+        expect(digs.plugins[pkg.name].serialPorts).to.be.a('function');
       });
     });
   });

@@ -72,7 +72,7 @@
     "plural": "^0.2.0",
     "progress": "^1.1.8",
     "request": "^2.65.0",
-    "serialport": "^2.0.1",
+    "serialport": "^3.1.0",
     "spawn-module": "boneskull/node-spawn-module",
     "split": "^1.0.0",
     "through2": "^2.0.0"

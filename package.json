@@ -52,7 +52,7 @@
     "istanbul": "^0.4.0",
     "jit-grunt": "^0.9.1",
     "load-grunt-config": "^0.19.0",
-    "mocha": "^2.3.3",
+    "mocha": "^3.0.2",
     "mock-firmata": "0.0.4",
     "pre-commit": "^1.1.2",
     "rewire": "github:thesavior/rewire",

@@ -39,7 +39,7 @@
     "codeclimate-test-reporter": "^0.1.1",
     "digs": "github:digsjs/digs",
     "digs-dev": "^0.2.17",
-    "eslint": "^1.8.0",
+    "eslint": "^3.7.1",
     "get-port": "^2.0.0",
     "grunt": "^0.4.5",
     "grunt-bump": "^0.6.0",

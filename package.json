@@ -67,7 +67,7 @@
     "digs-common": "digsjs/digs-common",
     "digs-serial-johnny-five": "digsjs/digs-serial-johnny-five",
     "fs-ext": "^0.5.0",
-    "graceful-fs": "^4.1.2",
+    "graceful-fs": "^4.1.11",
     "pipe-event": "^0.1.0",
     "plural": "^0.2.0",
     "progress": "^1.1.8",

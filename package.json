@@ -75,6 +75,6 @@
     "serialport": "^2.0.1",
     "spawn-module": "boneskull/node-spawn-module",
     "split": "^1.0.0",
-    "through2": "^2.0.0"
+    "through2": "^2.0.2"
   }
 }

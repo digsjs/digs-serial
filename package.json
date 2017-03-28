@@ -63,7 +63,7 @@
   },
   "dependencies": {
     "JSONStream": "^1.0.4",
-    "boom": "^2.9.0",
+    "boom": "^4.3.1",
     "digs-common": "digsjs/digs-common",
     "digs-serial-johnny-five": "digsjs/digs-serial-johnny-five",
     "fs-ext": "^0.5.0",
